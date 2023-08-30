@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conversor de Moneda</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #93B1A6; /* Color de fondo de la página */
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 400px;
+    margin: 1cm auto 0 auto; /* Espaciado superior de 1cm y centrado horizontal */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #F2ECBE; /* Color de fondo de los cuadros */
+    position: relative; /* Para posicionar los elementos absolutos */
+  }
+  select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+  }
+  .linea {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: #000; /* Color de la línea */
+    top: 100%; /* Ubicar abajo del cuadro */
+    left: 0;
+  }
+  .autor {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: calc(100% + 10px); /* Ubicar debajo de la línea con 10px de margen */
+    left: 0;
+  }
+  .nombre-autor {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: calc(100% + 30px); /* Ubicar debajo de la línea con 30px de margen */
+    left: 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Ingresos</h1>
+  <label>Ingrese su moneda:</label>
+  <select id="monedaEntrada">
+    <option value="Q">Quetzales</option>
+    <option value="$">Dólares</option>
+    <option value="€">Euros</option>
+  </select>
+  <input type="number" id="montoEntrada" placeholder="Monto">
+  
+  <label>Seleccione la moneda de destino:</label>
+  <select id="monedaSalida">
+    <option value="Q">Quetzales</option>
+    <option value="$">Dólares</option>
+    <option value="€">Euros</option>
+  </select>
+  
+  <button onclick="calcular()">Calcular</button>
+  
+  <div id="resultado"></div>
+  
+  <div class="linea"></div>
+  <div class="autor">Autor:</div>
+  <div class="nombre-autor">Pablo Marroquin</div>
+</div>
+
+<script>
+function calcular() {
+  const monedaEntrada = document.getElementById("monedaEntrada").value;
+  const montoEntrada = parseFloat(document.getElementById("montoEntrada").value);
+  const monedaSalida = document.getElementById("monedaSalida").value;
+  
+  let tasa = 1;
+  
+  // Definir tasas de conversión realistas
+  const tasas = {
+    "Q$": 0.13,  // 1 Quetzal = 0.12 Dólares
+    "$Q": 1 / 0.13,
+    "$€": 0.92,  // 1 Dólar = 0.85 Euros
+    "€$": 1 / 0.92,
+    "Q€": 0.12,  // 1 Quetzal = 0.10 Euros
+    "€Q": 1 / 0.12
+  };
+  
+  const key = `${monedaEntrada}${monedaSalida}`;
+  
+  if (tasas.hasOwnProperty(key)) {
+    tasa = tasas[key];
+  }
+  
+  const montoSalida = montoEntrada * tasa;
+  
+  document.getElementById("resultado").innerHTML = `Monto en ${monedaSalida}: ${montoSalida.toFixed(2)}`;
+}
+</script>
+</body>
+</html>
+
